@@ -31,7 +31,9 @@
   background-color: #198754 !important;
   color: white !important;
 }
-
+.navbar-brand {
+  letter-spacing: 0.05em;
+}
 @media (max-width: 576px) {
   .modal-dialog-custom { padding: 1rem; }
 }
