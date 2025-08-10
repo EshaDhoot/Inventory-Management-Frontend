@@ -11,7 +11,7 @@ import "react-toastify/dist/ReactToastify.css";
 import "./styles.css";
 
 function App() {
-  const { token, logout } = useAuth();
+  const { token, logout, user  } = useAuth();
   const [navbarOpen, setNavbarOpen] = useState(false);
 
   const closeNavbar = () => setNavbarOpen(false);
@@ -95,12 +95,38 @@ function App() {
           <Route
             path="/"
             element={
-              <div className="text-center p-5 bg-light rounded shadow-sm">
-                <h2>Welcome to Inventory Management</h2>
-                <p className="lead">Use the navigation above to login or register.</p>
-              </div>
+              token ? (
+                <div className="d-flex flex-column justify-content-center align-items-center text-center p-5 bg-light rounded shadow-sm" style={{ minHeight: '70vh' }}>
+                  <h1 className="display-4 fw-bold mb-3 text-success">Welcome Back, {user?.username || "User"}!!</h1>
+                  <p className="lead mb-4 text-secondary" style={{ maxWidth: '600px' }}>
+                    Manage your inventory efficiently. Access your products and stay organized.
+                  </p>
+                  <div>
+                    <Link to="/products" className="btn btn-success btn-lg shadow-sm">
+                      View Products
+                    </Link>
+                  </div>
+                </div>
+              ) : (
+                <div className="d-flex flex-column justify-content-center align-items-center text-center p-5 bg-light rounded shadow-sm" style={{ minHeight: '70vh' }}>
+                  <h1 className="display-4 fw-bold mb-3 text-success">Welcome to Inventory Management System</h1>
+                  <p className="lead mb-4 text-secondary" style={{ maxWidth: '600px' }}>
+                    Simplify your inventory tracking and control. Manage your products efficiently with real-time updates and seamless operations.
+                  </p>
+                  <div>
+                    <Link to="/register" className="btn btn-success btn-lg me-3 shadow-sm">
+                      Get Started
+                    </Link>
+                    <Link to="/login" className="btn btn-outline-success btn-lg shadow-sm">
+                      Login
+                    </Link>
+                  </div>
+                </div>
+              )
             }
           />
+
+
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route
