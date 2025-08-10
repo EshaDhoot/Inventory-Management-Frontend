@@ -1,22 +1,26 @@
 import React, { useState } from "react";
 import api from "../api";
+import { useAuth } from "../AuthContext";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
-export default function Register() {
+export default function Login() {
   const [form, setForm] = useState({ username: "", password: "" });
   const [loading, setLoading] = useState(false);
+  const { login } = useAuth();
 
   async function handleSubmit(e) {
     e.preventDefault();
     setLoading(true);
     try {
-      await api.post("/register", form);
-      toast.success("Registered successfully. Please login.");
-      setForm({ username: "", password: "" });
+      const res = await api.post("/login", form);
+      const token = res?.data?.access_token || res?.data?.token || res?.data;
+      if (!token) throw new Error("No token in response");
+      login(token);
+      toast.success("Logged in successfully!");
     } catch (err) {
-      const txt = err?.response?.data?.message || err?.response?.data || err.message;
-      toast.error("Register failed: " + txt);
+      const txt = err?.response?.data?.message || err?.response?.data?.Message || err.message;
+      toast.error("Login failed: " + txt);
     } finally {
       setLoading(false);
     }
@@ -27,7 +31,7 @@ export default function Register() {
       <div className="col-md-6 col-12">
         <div className="card shadow-sm border-0">
           <div className="card-body p-4">
-            <h4 className="card-title mb-4 text-center fw-bold">Register</h4>
+            <h4 className="card-title mb-4 text-center fw-bold">Login</h4>
             <form onSubmit={handleSubmit}>
               <div className="mb-3">
                 <label htmlFor="username" className="form-label">
@@ -61,14 +65,14 @@ export default function Register() {
                 type="submit"
                 className="btn btn-success w-100 btn-lg"
               >
-                {loading ? "Registering..." : "Register"}
+                {loading ? "Signing in..." : "Login"}
               </button>
             </form>
             <hr />
             <p className="text-center mb-0">
-              Already have an account?{" "}
-              <Link to="/login" className="text-decoration-none fw-semibold text-success">
-                Login
+              New?{" "}
+              <Link to="/register" className="text-decoration-none fw-semibold text-success">
+                Register an account
               </Link>
             </p>
           </div>
@@ -76,4 +80,4 @@ export default function Register() {
       </div>
     </div>
   );
-} 
+}
