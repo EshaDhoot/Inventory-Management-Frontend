@@ -3,7 +3,7 @@ import { Routes, Route, Link } from "react-router-dom";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import Products from "./pages/Products";
-// import AddProduct from "./pages/AddProduct";
+import AddProduct from "./pages/AddProduct";
 import ProtectedRoute from "./ProtectedRoute";
 import { useAuth } from "./AuthContext";
 import { ToastContainer } from "react-toastify";
@@ -14,7 +14,6 @@ function App() {
   const { token, logout } = useAuth();
   const [navbarOpen, setNavbarOpen] = useState(false);
 
-  // Close navbar on navigation link click
   const closeNavbar = () => setNavbarOpen(false);
 
   return (
@@ -112,14 +111,14 @@ function App() {
               </ProtectedRoute>
             }
           />
-          {/* <Route
+          <Route
             path="/add-product"
             element={
               <ProtectedRoute>
                 <AddProduct />
               </ProtectedRoute>
             }
-          /> */}
+          />
         </Routes>
       </main>
 
